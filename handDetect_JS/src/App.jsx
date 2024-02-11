@@ -1,27 +1,23 @@
-import { useEffect } from "react";
-import { handTrackSetup } from "./modules/HandTrackModule";
 import "./App.css";
+import CustomCursor from "./features/customCursor/Cursor";
+import HandTrack from "./features/HandTrack/HandTrack";
+import { useSelector } from "react-redux";
+import { selectHandTrack } from "./features/HandTrack/handTrackSlice";
 
 function App() {
-  useEffect(() => {
-    handTrackSetup();
-  }, []);
+  const handTrack = useSelector(selectHandTrack);
 
   return (
     <>
-      <p>Hand Track</p>
       <div>
-        <video
-          id="video"
-          style={{ position: "absolute", left: "0px", top: "0px" }}
-          autoPlay
-          playsInline
-        ></video>
-        <canvas
-          className="output_canvas"
-          id="output_canvas"
-          style={{ position: "absolute", left: "0px", top: "0px" }}
-        ></canvas>
+        <HandTrack
+          videoEnabled={true}
+          trackerEnabled={true}
+          visualsEnabled={false}
+        />
+        {handTrack.lmList?.length > 0 && (
+          <CustomCursor cursorPosition={handTrack.lmList[0]} />
+        )}
       </div>
     </>
   );

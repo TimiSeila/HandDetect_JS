@@ -1,0 +1,20 @@
+.custom-cursor {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border: 4px solid blue;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.custom-cursor-active {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border: 4px solid blue;
+  background-color: blue;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000;
+}
