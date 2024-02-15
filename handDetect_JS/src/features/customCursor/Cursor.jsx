@@ -34,7 +34,12 @@ const Cursor = ({ cursorPosition }) => {
   }, [cursorPosition, maxWidth, minWidth, minHeight, maxHeight]);
 
   useEffect(() => {
-    if (findDistance(handTrack.lmList[4], handTrack.lmList[8]) < 0.06) {
+    let valueZ = handTrack?.lmList[0]?.z;
+    if (
+      findDistance(handTrack.lmList[4], handTrack.lmList[8]) /
+        (valueZ * 1000000) <
+      0.13
+    ) {
       if (!cursorRedux.isClicked) {
         dispatch(updateIsClicked(true));
         cursorRef.current.className = "custom-cursor-active";
