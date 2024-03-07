@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Cursor.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCursor, updateIsClicked } from "./cursorSlice";
+import {
+  selectCursor,
+  updateCursorDistance,
+  updateIsClicked,
+} from "./cursorSlice";
 import { selectHandTrack } from "../HandTrack/handTrackSlice";
 import { findDistance } from "../../utils/HandTrackUtils";
 
@@ -20,6 +24,7 @@ const Cursor = ({ cursorPosition }) => {
   const smoothingFactor = 0.2;
 
   useEffect(() => {
+    dispatch(updateCursorDistance(cursorPosition.z));
     const updateSmoothedPosition = () => {
       const newX = maxWidth - cursorPosition.x * (maxWidth - minWidth);
       const newY = minHeight + cursorPosition.y * (maxHeight - minHeight);
@@ -34,7 +39,7 @@ const Cursor = ({ cursorPosition }) => {
   }, [cursorPosition, maxWidth, minWidth, minHeight, maxHeight]);
 
   useEffect(() => {
-    let valueZ = handTrack?.lmList[0]?.z;
+    let valueZ = cursorRedux.cursorDistance;
     if (
       findDistance(handTrack.lmList[4], handTrack.lmList[8]) /
         (valueZ * 1000000) <

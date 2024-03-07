@@ -13,6 +13,7 @@ import { isSelectedHand } from "../../utils/HandTrackUtils";
 const HandTrack = ({ videoEnabled, trackerEnabled, visualsEnabled }) => {
   let handLandmarker;
   const [lastVideoTime, setLastVideoTime] = useState(-1);
+  const [loaded, setLoaded] = useState(false);
   const videoRef = useRef(null);
   const handTrack = useSelector(selectHandTrack);
   const dispatch = useDispatch();
@@ -70,6 +71,7 @@ const HandTrack = ({ videoEnabled, trackerEnabled, visualsEnabled }) => {
         runningMode: "VIDEO",
       });
       console.log("Hand task setup successful");
+      setLoaded(true);
     } catch (err) {
       console.error("Hand task setup failed", err);
     }
@@ -101,8 +103,26 @@ const HandTrack = ({ videoEnabled, trackerEnabled, visualsEnabled }) => {
         style={{ position: "absolute", left: "0px", top: "0px" }}
         autoPlay
       ></video>
-      {visualsEnabled && (
-        <HandTrackVisuals results={handTrack.lmList} video={videoRef.current} />
+      {loaded ? (
+        <>
+          {visualsEnabled && (
+            <HandTrackVisuals
+              results={handTrack.lmList}
+              video={videoRef.current}
+            />
+          )}
+        </>
+      ) : (
+        <p
+          style={{
+            position: "absolute",
+            top: innerHeight / 2,
+            left: innerWidth / 2,
+            fontSize: "3vw",
+          }}
+        >
+          Loading...
+        </p>
       )}
     </>
   );
